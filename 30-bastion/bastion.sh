@@ -30,6 +30,10 @@ else
     echo "You are super user."
 fi
 
+# mysql
+dnf install mysql -y
+VALIDATE $? "MySQL installation"
+
 # docker
 yum install -y yum-utils
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -67,3 +71,5 @@ VALIDATE $? "kubens installation"
  #k9s
  curl -sS https://webinstall.dev/k9s | bash
  VALIDATE $? "k9s installation"
+
+ 

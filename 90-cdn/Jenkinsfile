@@ -39,14 +39,13 @@ pipeline {
                         if [$params.ACTION == 'APPLY']
                         then
                             terraform apply -auto-approve tfplan
-                        elif [$parms.ACTION == 'DESTROY']
-                            terraform destroy -auto-approve
+                      
                         fi
                     """    
                 }
             }
         }
-        stage('Parallel-1') {
+       /* stage('Parallel-1') {
             when{
                 expression { parms.ACTION == 'DESTROY'}
             }
@@ -91,7 +90,28 @@ pipeline {
                 build job: '10-vpc', parameters: [string(name: 'ACTION', value: 'DESTROY')], wait: false
             }
 
-        }         
+        }   */  
+        stage('Destroy'){
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            steps{
+                withAWS(region: 'us-east-1', credentials: 'aws-creds') {
+                    script {
+                        def directories = ['90-cdn', '80-ecr', '70-alb', '60-acm', '50-eks', '40-rds', '30-bastion', '20-sg', '10-vpc']
+                        for (dir in directories) {
+                            echo "Destroying resources in directory: ${dir}"
+                            sh """
+                            cd ${dir}
+                            terraform init -reconfigure
+                            terraform destroy -auto-approve || { echo "Failed to destroy resources in ${dir}"; exit 1; }
+                            cd ..
+                            """
+                        }
+            }
+                }
+            }
+        }    
         
     }
     post{
