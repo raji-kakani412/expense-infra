@@ -1,5 +1,5 @@
 module "mysql_sg"{
-    source ="../../terraform-aws-sg"
+    source ="git::https://github.com/raji-kakani412/terraform-aws-sg.git?ref=master"
     project_name= var.project_name
     environment=var.environment
     sg_name= "mysql"
@@ -9,7 +9,7 @@ module "mysql_sg"{
 
 }
 module "bastion_sg"{
-    source ="../../terraform-aws-sg"
+    source ="git::https://github.com/raji-kakani412/terraform-aws-sg.git?ref=master"
     project_name= var.project_name
     environment=var.environment
     sg_name= "bastion"
@@ -19,7 +19,7 @@ module "bastion_sg"{
 
 }
 module "node_sg"{
-    source ="../../terraform-aws-sg"
+    source ="git::https://github.com/raji-kakani412/terraform-aws-sg.git?ref=master"
     project_name= var.project_name
     environment=var.environment
     sg_name= "node"
@@ -29,7 +29,7 @@ module "node_sg"{
 
 }
 module "control_plane_sg"{
-    source ="../../terraform-aws-sg"
+    source ="git::https://github.com/raji-kakani412/terraform-aws-sg.git?ref=master"
     project_name= var.project_name
     environment=var.environment
     sg_name= "eks-control-plane"
@@ -39,7 +39,7 @@ module "control_plane_sg"{
 
 }
 module "ingress_alb_sg"{
-    source ="../../terraform-aws-sg"
+    source ="git::https://github.com/raji-kakani412/terraform-aws-sg.git?ref=master"
     project_name= var.project_name
     environment=var.environment
     sg_name= "ingress-alb"
