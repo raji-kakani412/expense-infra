@@ -89,7 +89,7 @@ module "records" {
 
   records = [
     {
-      name    = "expense-cdn" # expense-dev.devops-aws.tech
+      name    = "expense-cdn" # expense-cdn.devops-aws.tech
       type    = "A"
            
       alias = {
