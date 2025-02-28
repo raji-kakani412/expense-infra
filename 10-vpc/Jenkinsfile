@@ -47,14 +47,14 @@ pipeline {
                 }
             }
         }
-        // stage ('Trigger SG') {
-        //      when {
-        //         expression { parms.ACTION == 'APPLY'}
-        //     }
-        //     steps{
-        //         build job: '20-sg', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-        //     }
-        // }
+        stage ('Trigger SG') {
+             when {
+                expression { parms.ACTION == 'APPLY'}
+            }
+            steps{
+                build job: '20-sg', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+            }
+        }
         
     }
     post{
