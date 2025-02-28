@@ -36,74 +36,75 @@ pipeline {
                 withAWS(region: 'us-east-1', credentials: 'aws-creds'){
                     sh """
                         cd 20-sg
-                        if [$params.ACTION == 'APPLY']
+                        if [ $params.ACTION == 'APPLY' ]
                         then
                             terraform apply -auto-approve tfplan
-                        elif [$parms.ACTION == 'DESTROY']
+                        elif [ $parms.ACTION == 'DESTROY' ]
+                        then
                             terraform destroy -auto-approve
                         fi
                     """    
                 }
             }
         }
-        stage ('Destroy VPC') {
-           when {
-                expression { parms.ACTION == 'DESTROY'}
-            }
-            steps{
-                build job: '10-vpc', parameters: [string(name: 'ACTION', value: 'DESTROY')], wait: false
-            }
-        }
-       stage('Parallel') {
-            when{
-                expression { parms.ACTION == 'APPLY'}
-            }
-            parallel {
-                stage('Bastion') {
-                    steps {
-                        build job: '30-bastion', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-                    }
-                }
-                 stage('RDS') {
-                    steps {
-                        build job: '40-rds', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-                    }
-                }
-               stage('EKS') {
-                    steps {
-                        build job: '50-eks', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-                    }
-                }
+    //     stage ('Destroy VPC') {
+    //        when {
+    //             expression { parms.ACTION == 'DESTROY'}
+    //         }
+    //         steps{
+    //             build job: '10-vpc', parameters: [string(name: 'ACTION', value: 'DESTROY')], wait: false
+    //         }
+    //     }
+    //    stage('Parallel') {
+    //         when{
+    //             expression { parms.ACTION == 'APPLY'}
+    //         }
+    //         parallel {
+    //             stage('Bastion') {
+    //                 steps {
+    //                     build job: '30-bastion', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+    //                 }
+    //             }
+    //              stage('RDS') {
+    //                 steps {
+    //                     build job: '40-rds', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+    //                 }
+    //             }
+    //            stage('EKS') {
+    //                 steps {
+    //                     build job: '50-eks', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+    //                 }
+    //             }
                 
-                stage('ECR') {
-                    steps {
-                        build job: '80-ecr', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-                    }
-                }
-            }
-        }
-         stage('Sequential') {
-            when{
-                expression { parms.ACTION == 'APPLY'}
-            }
-            parallel {
-                stage('ACM') {
-                    steps {
-                        build job: '60-acm', parameters: [string(name: 'ACTION', value: 'APPLY')]
-                    }
-                }
-                stage('ALB') {
-                    steps {
-                        build job: '70-alb', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-                    }
-                }
-                stage('CDN') {
-                    steps {
-                        build job: '90-cdn', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-                    }
-                }
-            }
-        }
+    //             stage('ECR') {
+    //                 steps {
+    //                     build job: '80-ecr', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+    //                 }
+    //             }
+    //         }
+    //     }
+    //      stage('Sequential') {
+    //         when{
+    //             expression { parms.ACTION == 'APPLY'}
+    //         }
+    //         parallel {
+    //             stage('ACM') {
+    //                 steps {
+    //                     build job: '60-acm', parameters: [string(name: 'ACTION', value: 'APPLY')]
+    //                 }
+    //             }
+    //             stage('ALB') {
+    //                 steps {
+    //                     build job: '70-alb', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+    //                 }
+    //             }
+    //             stage('CDN') {
+    //                 steps {
+    //                     build job: '90-cdn', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+    //                 }
+    //             }
+    //         }
+    //     }
         
         
     }
