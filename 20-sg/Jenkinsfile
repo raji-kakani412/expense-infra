@@ -55,37 +55,37 @@ pipeline {
                 build job: '10-vpc', parameters: [string(name: 'ACTION', value: 'DESTROY')], wait: false
             }
         }
-    //    stage('Parallel') {
-    //         when{
-    //             expression { parms.ACTION == 'APPLY'}
-    //         }
-    //         parallel {
-    //             stage('Bastion') {
-    //                 steps {
-    //                     build job: '30-bastion', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-    //                 }
-    //             }
-    //              stage('RDS') {
-    //                 steps {
-    //                     build job: '40-rds', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-    //                 }
-    //             }
-    //            stage('EKS') {
-    //                 steps {
-    //                     build job: '50-eks', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-    //                 }
-    //             }
+       stage('Parallel') {
+            when{
+                expression { params.ACTION == 'APPLY'}
+            }
+            parallel {
+                stage('Bastion') {
+                    steps {
+                        build job: '30-bastion', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+                    }
+                }
+                // stage('RDS') {
+                //     steps {
+                //         build job: '40-rds', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+                //     }
+                // }
+               stage('EKS') {
+                    steps {
+                        build job: '50-eks', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+                    }
+                }
                 
-    //             stage('ECR') {
-    //                 steps {
-    //                     build job: '80-ecr', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-    //                 }
-    //             }
-    //         }
-    //     }
+                // stage('ECR') {
+                //     steps {
+                //         build job: '80-ecr', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+                //     }
+                // }
+            }
+        }
     //      stage('Sequential') {
     //         when{
-    //             expression { parms.ACTION == 'APPLY'}
+    //             expression { params.ACTION == 'APPLY'}
     //         }
     //         parallel {
     //             stage('ACM') {
