@@ -13,7 +13,7 @@ terraform {
     #dynamodb_table = "81s-locking-dev"
     use_lockfile=true
   }
-  }
+  
 
 }
 
