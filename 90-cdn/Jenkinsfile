@@ -39,7 +39,9 @@ pipeline {
                         if [$params.ACTION == 'APPLY']
                         then
                             terraform apply -auto-approve tfplan
-                      
+                        // elif [$params.ACTION == 'DESTROY']
+                        // then
+                        //     terraform destroy -auto-approve
                         fi
                     """    
                 }
@@ -47,7 +49,7 @@ pipeline {
         }
        /* stage('Parallel-1') {
             when{
-                expression { parms.ACTION == 'DESTROY'}
+                expression { params.ACTION == 'DESTROY'}
             }
             parallel {
                 stage('ECR') {
@@ -102,13 +104,13 @@ pipeline {
                         for (dir in directories) {
                             echo "Destroying resources in directory: ${dir}"
                             sh """
-                            cd ${dir}
-                            terraform init -reconfigure
-                            terraform destroy -auto-approve || { echo "Failed to destroy resources in ${dir}"; exit 1; }
-                            cd ..
+                                cd ${dir}
+                                terraform init -reconfigure
+                                terraform destroy -auto-approve || { echo "Failed to destroy resources in ${dir}"; exit 1; }
+                                cd ..
                             """
                         }
-            }
+                    }
                 }
             }
         }    
