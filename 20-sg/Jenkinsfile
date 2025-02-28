@@ -47,14 +47,14 @@ pipeline {
                 }
             }
         }
-    //     stage ('Destroy VPC') {
-    //        when {
-    //             expression { parms.ACTION == 'DESTROY'}
-    //         }
-    //         steps{
-    //             build job: '10-vpc', parameters: [string(name: 'ACTION', value: 'DESTROY')], wait: false
-    //         }
-    //     }
+        stage ('Destroy VPC') {
+           when {
+                expression { parms.ACTION == 'DESTROY'}
+            }
+            steps{
+                build job: '10-vpc', parameters: [string(name: 'ACTION', value: 'DESTROY')], wait: false
+            }
+        }
     //    stage('Parallel') {
     //         when{
     //             expression { parms.ACTION == 'APPLY'}
