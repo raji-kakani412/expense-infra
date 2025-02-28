@@ -79,7 +79,7 @@ resource "aws_security_group_rule" "node_ingress_alb"{
     from_port= 30000
     to_port= 32767
     protocol= "tcp"
-    ource_security_group_id= module.ingress_alb_sg.id
+    source_security_group_id= module.ingress_alb_sg.id
     security_group_id = module.node_sg.id
 }
 resource "aws_security_group_rule" "node_control_plane"{
@@ -87,7 +87,7 @@ resource "aws_security_group_rule" "node_control_plane"{
     from_port= 0
     to_port= 0
     protocol= "-1"
-    ource_security_group_id= module.control_plane_sg.id
+    source_security_group_id= module.control_plane_sg.id
     security_group_id = module.node_sg.id
 }
 resource "aws_security_group_rule" "control_plane_node"{
@@ -95,7 +95,7 @@ resource "aws_security_group_rule" "control_plane_node"{
     from_port= 0
     to_port= 0
     protocol= "-1"
-    ource_security_group_id= module.node_sg.id
+    source_security_group_id= module.node_sg.id
     security_group_id = module.control_plane_sg.id
 }
 resource "aws_security_group_rule" "control_plane_bastion"{
@@ -103,7 +103,7 @@ resource "aws_security_group_rule" "control_plane_bastion"{
     from_port= 443
     to_port= 443
     protocol= "tcp"
-    ource_security_group_id= module.bastion_sg.id
+    source_security_group_id= module.bastion_sg.id
     security_group_id = module.control_plane_sg.id
 }
 resource "aws_security_group_rule" "node_vpc"{
@@ -119,7 +119,7 @@ resource "aws_security_group_rule" "node_bastion"{
     from_port= 22
     to_port= 22
     protocol= "tcp"
-    ource_security_group_id= module.bastion_sg.id
+    source_security_group_id= module.bastion_sg.id
     security_group_id = module.control_plane_sg.id
 }
 resource "aws_security_group_rule" "mysql_node"{
