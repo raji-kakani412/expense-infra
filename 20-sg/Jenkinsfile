@@ -75,36 +75,35 @@ pipeline {
                         build job: '50-eks', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
                     }
                 }
-                
-                // stage('ECR') {
-                //     steps {
-                //         build job: '80-ecr', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-                //     }
-                // }
+                stage('ECR') {
+                    steps {
+                        build job: '80-ecr', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+                    }
+                }
             }
         }
-    //      stage('Sequential') {
-    //         when{
-    //             expression { params.ACTION == 'APPLY'}
-    //         }
-    //         parallel {
-    //             stage('ACM') {
-    //                 steps {
-    //                     build job: '60-acm', parameters: [string(name: 'ACTION', value: 'APPLY')]
-    //                 }
-    //             }
-    //             stage('ALB') {
-    //                 steps {
-    //                     build job: '70-alb', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-    //                 }
-    //             }
-    //             stage('CDN') {
-    //                 steps {
-    //                     build job: '90-cdn', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
-    //                 }
-    //             }
-    //         }
-    //     }
+         stage('Sequential') {
+            when{
+                expression { params.ACTION == 'APPLY'}
+            }
+            parallel {
+                stage('ACM') {
+                    steps {
+                        build job: '60-acm', parameters: [string(name: 'ACTION', value: 'APPLY')]
+                    }
+                }
+                stage('ALB') {
+                    steps {
+                        build job: '70-alb', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+                    }
+                }
+                stage('CDN') {
+                    steps {
+                        build job: '90-cdn', parameters: [string(name: 'ACTION', value: 'APPLY')], wait: false
+                    }
+                }
+            }
+        }
         
         
     }
